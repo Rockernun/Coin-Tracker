@@ -5,9 +5,12 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`  
     padding: 0px 20px;
+    max-width:480px;
+    margin: 0 auto;
 `;
 
 const Header = styled.div`
+    b
     height:10vh;
     display:flex;
     justify-content:center;
@@ -36,8 +39,11 @@ const Coin = styled.li`
 `;
 
 const Title = styled.h1`
+    background:linear-gradient(-45deg, #00f, #0f0, #ff0);
+    -webkit-background-clip:text;
     font-size:48px;
-    color:${(props) => props.theme.accentColor};
+    color:var(--bgColor);
+    -webkit-text-stroke:3px transparent;
 `;
 
 const coins = [
