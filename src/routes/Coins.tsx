@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`  
     padding: 0px 20px;
@@ -86,16 +87,18 @@ interface CoinInterface {
 }
 
 
+
+
 function Coins() {
     const [coins, setCoins] = useState<CoinInterface[]>([]);
     const [loading, setLoading] = useState(true);
+    const getCoins = async() => {
+        const response = await axios("https://api.coinpaprika.com/v1/tickers");
+        setCoins(response.data.slice(0, 30));
+        setLoading(false);
+    }
     useEffect(() => {
-        (async() => {
-            const response = await fetch("https://api.coinpaprika.com/v1/tickers");
-            const json = await response.json();
-            setCoins(json.slice(0, 30));
-            setLoading(false);
-        })();
+        getCoins();
     }, []);
     console.log(coins);
     return (
