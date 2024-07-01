@@ -1,5 +1,6 @@
 //  Individual Coin Page
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -36,11 +37,19 @@ const Container = styled.div`
 
 function Coin() {
     const [loading, setLoading] = useState(true);
-    const { coinId } = useParams<RouteParams>();  //  Coin에서는 coinId를 받아서 파라미터로 사용할거다.
-    const {state} = useLocation<RouteState>();  //  react router DOM이 보내주는 location object에 접근하기만 하면 된다.
-    //  가져온 state로 타이틀에 coin의 name을 직접 뿌려줄 수 있다.
-    //  하지만, 다이렉트로 Coin 페이지로 접속하면 에러가 발생! state가 생성되려면 Home 화면을 먼저 열어야 하고, 내가 클릭할 때 state가 만들어지기 때문이다.
-    console.log(state.name);
+    const { coinId } = useParams<RouteParams>();  
+    const {state} = useLocation<RouteState>();  
+    const [info, setInfo] = useState({});
+    const [priceInfo, setPriceInfo] = useState({});
+    const getCoins = async() => {
+        const infoData = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`);
+        setInfo(infoData);
+        const priceData = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
+        setPriceInfo(priceData);
+    }
+    useEffect(() => {
+        getCoins();
+    }, []);
     return (
       <Container>
         <Header>
