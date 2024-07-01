@@ -28,9 +28,10 @@ const Coin = styled.li`
     margin-bottom:10px;
     border-radius:15px;
     a {
+        display:flex;
+        align-items:center;
         transition:color 0.2s ease-in; 
         padding: 20px;
-        display:block;  //  박스 자체에 마우스를 올리면 클릭되도록
     }
     &:hover {
         a {
@@ -50,6 +51,13 @@ const Title = styled.h1`
 const Loader = styled.span`
     text-align: center;
     display:block;
+`;
+
+//  코인 아이콘이 너무 크게 나온다
+const Img = styled.img`
+    width:35px;
+    height:35px;
+    margin-right:10px;
 `;
 
 //  코인 인터페이스
@@ -86,9 +94,6 @@ interface CoinInterface {
     }
 }
 
-
-
-
 function Coins() {
     const [coins, setCoins] = useState<CoinInterface[]>([]);
     const [loading, setLoading] = useState(true);
@@ -109,7 +114,10 @@ function Coins() {
             {loading ? (<Loader>Loading...</Loader>) : (
                 <CoinsList>
                 {coins.map((coin) => (<Coin key={coin.id}>
-                    <Link to={`/${coin.id}`}>{coin.symbol} &rarr;</Link>
+                    <Link to={`/${coin.id}`}>
+                        <Img src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`} />
+                    {coin.symbol} &rarr;
+                    </Link>
                 </Coin>
             ))}
             </CoinsList>
