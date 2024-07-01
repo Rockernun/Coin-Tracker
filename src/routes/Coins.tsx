@@ -11,8 +11,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-    b
-    height:10vh;
+    height:15vh;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -41,11 +40,8 @@ const Coin = styled.li`
 `;
 
 const Title = styled.h1`
-    background:linear-gradient(-45deg, #00f, #0f0, #ff0);
-    -webkit-background-clip:text;
     font-size:48px;
-    color:var(--bgColor);
-    -webkit-text-stroke:3px transparent;
+    color:${(props) => props.theme.accentColor};
 `;
 
 const Loader = styled.span`
@@ -114,7 +110,10 @@ function Coins() {
             {loading ? (<Loader>Loading...</Loader>) : (
                 <CoinsList>
                 {coins.map((coin) => (<Coin key={coin.id}>
-                    <Link to={`/${coin.id}`}>
+                    <Link to={{
+                        pathname: `/${coin.id}`,
+                        state: { name: coin.name },  //  이렇게 함으로써 유저는 화면 전환 시에 아무것도 볼 필요가 없다.  
+                    }}>
                         <Img src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`} />
                     {coin.symbol} &rarr;
                     </Link>
