@@ -1,7 +1,7 @@
-import React from "react";
 import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
-import { Helmet } from "react-helmet-async";
+import "./App.css";
+import {ReactQueryDevtools} from "react-query/devtools";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -64,11 +64,9 @@ a {
 function App() {
   return (
     <>
-    <Helmet>
-      <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" />
-    </Helmet>
       <GlobalStyle />
       <Router />
+	  <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 }

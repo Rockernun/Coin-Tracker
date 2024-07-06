@@ -1,8 +1,6 @@
 //  Coin List Page
-import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
 
