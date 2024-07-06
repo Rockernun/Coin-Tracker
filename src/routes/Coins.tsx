@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useQuery } from "react-query";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`  
     padding: 0px 20px;
@@ -49,7 +51,6 @@ const Loader = styled.span`
     display:block;
 `;
 
-//  코인 아이콘이 너무 크게 나온다
 const Img = styled.img`
     width:35px;
     height:35px;
@@ -57,7 +58,7 @@ const Img = styled.img`
 `;
 
 //  코인 인터페이스
-interface CoinInterface {
+interface ICoin {
     "id": string,
     "name": string,
     "symbol": string,
@@ -91,28 +92,18 @@ interface CoinInterface {
 }
 
 function Coins() {
-    const [coins, setCoins] = useState<CoinInterface[]>([]);
-    const [loading, setLoading] = useState(true);
-    const getCoins = async() => {
-        const response = await axios("https://api.coinpaprika.com/v1/tickers");
-        setCoins(response.data.slice(0, 30));
-        setLoading(false);
-    }
-    useEffect(() => {
-        getCoins();
-    }, []);
-    console.log(coins);
+    const { isLoading, data} = useQuery<ICoin[]>("allCoins", fetchCoins);
     return (
         <Container>
             <Header>
                 <Title>코인</Title>
             </Header>
-            {loading ? (<Loader>Loading...</Loader>) : (
+            {isLoading ? (<Loader>Loading...</Loader>) : (
                 <CoinsList>
-                {coins.map((coin) => (<Coin key={coin.id}>
+                {data?.slice(0, 100).map((coin) => (<Coin key={coin.id}>
                     <Link to={{
                         pathname: `/${coin.id}`,
-                        state: { name: coin.name },  //  이렇게 함으로써 유저는 화면 전환 시에 아무것도 볼 필요가 없다.  
+                        state: { name: coin.name }, 
                     }}>
                         <Img src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`} />
                     {coin.symbol} &rarr;
